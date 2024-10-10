@@ -1,0 +1,89 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f4f8;
+  }
+  
+  .container {
+    text-align: center;
+  }
+  
+  input {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 2px solid #ddd;
+    margin-right: 10px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  #garden {
+    margin-top: 20px;
+    position: relative;
+    width: 100vw;
+    height: 60vh;
+    background-color: #fff;
+    border: 2px solid #ccc;
+    overflow: hidden;
+  }
+  
+  .flower {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: bloom 3s ease-in-out forwards;
+    opacity: 0;
+  }
+  
+  .petal {
+    position: absolute;
+    width: 20px;
+    height: 50px;
+    background-color: #f48fb1;
+    border-radius: 50%;
+    transform-origin: bottom center;
+  }
+  
+  .flower-center {
+    width: 30px;
+    height: 30px;
+    background-color: yellow;
+    border-radius: 50%;
+  }
+  
+  @keyframes bloom {
+    0% {
+      transform: scale(0.2);
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
