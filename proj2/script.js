@@ -1,124 +1,133 @@
-document.getElementById('bloomButton').addEventListener('click', () => {
-  bloomFromInput();
+let plantButton = document.getElementById('plantButton');
+let input = document.getElementById('input');
+let garden = document.getElementById('garden');
+let petalCount = 6; 
+
+plantButton.addEventListener('click', displayFlower);
+input.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') 
+    displayFlower();
 });
 
-// Add event listener for the Enter key
-document.getElementById('wordInput').addEventListener('keydown', (event) => {
-  if (event.key === 'Enter') {
-    bloomFromInput();
-  }
-});
 
-function bloomFromInput() {
-  const wordInput = document.getElementById('wordInput').value.trim();
-  if (wordInput) {
-    bloomFlower(wordInput);
-    document.getElementById('wordInput').value = ''; // Clear input after bloom
+function displayFlower() {
+  let userInput = input.value;
+  if (userInput) {
+    let flower = createFlower(userInput);
+    randomPos(flower);
+    garden.append(flower);
+    input.value = ''; // Clear input after adding flower
   }
 }
 
-function bloomFlower(word) {
-  const garden = document.getElementById('garden');
-  const flower = document.createElement('div');
+function createFlower(userInput) { 
+  let flower = document.createElement('div');
   flower.classList.add('flower');
 
-  // Create flower center
-  const center = document.createElement('div');
-  center.classList.add('flower-center');
-  flower.appendChild(center);
+  let center = document.createElement('div');
+  center.classList.add('center');
 
-  // Create petals based on word length
-  const petalCount = Math.min(Math.max(word.length, 5), 12); // Set a reasonable range for petals
+  flower.append(center);
+
   for (let i = 0; i < petalCount; i++) {
-    const petal = document.createElement('div');
+    let petal = document.createElement('div');
     petal.classList.add('petal');
 
-    // Position the petal around the center in a circle
-    const angle = (360 / petalCount) * i;
-    petal.style.transform = `rotate(${angle}deg) translate(0, -50px)`;
+    let angle = (360 / petalCount) * i;  
+    petal.style.transform = `rotate(${angle}deg) translate(0px,-25px)`;
 
-    // Set petal color based on word sentiment
-    const sentiment = analyzeSentiment(word);
-    petal.style.backgroundColor = sentimentColor(sentiment);
-
-    flower.appendChild(petal);
+    petal.style.backgroundColor = petalColor(sentiment(userInput));
+    flower.append(petal);
   }
 
-  // Try to find a non-overlapping position
-  let positionFound = false;
-  let attempts = 0;
-  const maxAttempts = 100; // Limit the number of attempts to find a position
-
-  while (!positionFound && attempts < maxAttempts) {
-    const left = Math.random() * (garden.clientWidth - 100); // Adjust for flower width
-    const top = Math.random() * (garden.clientHeight - 100); // Adjust for flower height
-
-    // Set the position for the flower
-    flower.style.left = `${left}px`;
-    flower.style.top = `${top}px`;
-
-    // Check for overlap with existing flowers
-    if (!isOverlapping(garden, flower)) {
-      positionFound = true;
-    }
-
-    attempts++;
-  }
-
-  // Add the flower to the garden if a valid position was found
-  if (positionFound) {
-    garden.appendChild(flower);
-  }
+  return flower; 
 }
 
-function isOverlapping(garden, newFlower) {
-    const flowers = garden.getElementsByClassName('flower');
-    const newRect = newFlower.getBoundingClientRect();
+function randomPos(flower) {
+  let randomColumn = Math.floor(Math.random() * 5) +1; // Start position in the grid
+  let randomRow = Math.floor(Math.random() * 5) +1; // Start position in the grid
+  flower.style.gridColumnStart = randomColumn;
+  flower.style.gridRowStart = randomRow;
+}
+
+function sentiment(userInput) {
+  let positiveWords = [
+    'happy', 'happiness', 'happier', 'happiest', 'amazing', 'beautiful', 'fun',
+    'love', 'loved', 'loving',
+    'like', 'liked', 'liking',
+    'joy', 'joyful', 'joyfulness',
+    'peace', 'peaceful', 'peacefully',
+    'excited', 'excitement', 'exciting',
+    'hope', 'hopeful', 'hoped', 'hoping',
+    'good', 'great', 'awesome', 'fantastic', 'ecstatic',
+    'grateful', 'gratitude', 'gratefully',
+    'success', 'successful', 'succeeded', 'succeeding',
+    'brave', 'bravery', 'braver', 'bravest',
+    'bright', 'brightness', 'brighter', 'brightest',
+    'wonderful', 'wonderfully', 'wonder',
+    'creative', 'creativity', 'creatively',
+    'kind', 'kindness', 'kinder', 'kindest',
+    'cheerful', 'cheerfulness', 'cheerfully',
+    'strong', 'strength', 'stronger', 'strongest',
+    'support', 'supportive', 'supported', 'supporting',
+    'inspire', 'inspiring', 'inspired', 'inspiration',
+    'delight', 'delighted', 'delightful', 'delighting',
+    'caring', 'care', 'cared', 'caring',
+    'motivate', 'motivated', 'motivating', 'motivation'
+  ];
+  let negativeWords = [
+    'sad', 'sadder', 'saddest',
+    'angry', 'anger', 'angrier', 'angriest',
+    'fear', 'fearful', 'feared', 'fearing',
+    'hate', 'hated', 'hating', 'tire',
+    'bad', 'terrible', 'mad', 'sick', 'down', 
+    'depressed', 'depressing', 'gloomy',
+    'tired', 'tiredness', 'tiring',
+    'disappoint', 'disappointed', 'disappointing',
+    'worry', 'worried', 'worrying',
+    'frustrate', 'frustrated', 'frustrating',
+    'lonely', 'loneliness',
+    'stress', 'stressed', 'stressing',
+    'jealous', 'jealousy', 'more jealous',
+    'regret', 'regretted', 'regretting',
+    'bitter', 'bitterness', 'more bitter',
+    'fail', 'failed', 'failing',
+    'overwhelm', 'overwhelmed', 'overwhelming',
+    'negative', 'negativity', 'more negative',
+    'suffer', 'suffered', 'suffering',
+    'annoy', 'annoyed', 'annoying',
+    'distrust', 'distrustful', 'distrusted', 'distrusting',
+    'pain', 'painful', 'pained'
+  ];
+
+  for (let x = 0; x < positiveWords.length; x++) {
     
-    // Calculate effective radius based on the number of petals and their dimensions
-    const petalCount = newFlower.children.length - 1; // Exclude center
-    const petalWidth = 20; // width of petal
-    const petalHeight = 50; // height of petal
-    const flowerRadius = (petalCount > 0 ? petalCount * petalWidth / (2 * Math.PI) : 0) + (petalHeight / 2) + 10; // Adding some padding
-  
-    for (let flower of flowers) {
-      const flowerRect = flower.getBoundingClientRect();
-      
-      // Calculate the distance between the centers of the flowers
-      const centerX1 = newRect.x + newRect.width / 2;
-      const centerY1 = newRect.y + newRect.height / 2;
-      const centerX2 = flowerRect.x + flowerRect.width / 2;
-      const centerY2 = flowerRect.y + flowerRect.height / 2;
-  
-      const dx = centerX1 - centerX2;
-      const dy = centerY1 - centerY2;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-      
-      // Check for overlap using the radius
-      if (distance < flowerRadius + (flowerRadius)) {
-        return true; // Overlap detected
-      }
+    if (userInput.includes(positiveWords[x])) {
+      return 'positive';
     }
-    return false; // No overlap
   }
-  
 
-function analyzeSentiment(word) {
-  const positiveWords = ['happy', 'love', 'joy', 'peace', 'excited'];
-  const negativeWords = ['sad', 'angry', 'fear', 'hate', 'tired'];
+  for (let x = 0; x < negativeWords.length; x++) {
+    
+    if (userInput.includes(negativeWords[x])) {
+      return 'negative';
+    }
+  }
 
-  if (positiveWords.some(pw => word.includes(pw))) return 'positive';
-  if (negativeWords.some(nw => word.includes(nw))) return 'negative';
-  return 'neutral';
+  return 'neutral'
+
 }
 
-function sentimentColor(sentiment) {
-  switch (sentiment) {
-    case 'positive':
-      return 'lightgreen';
-    case 'negative':
-      return 'lightcoral';
-    default:
-      return 'lightblue';
+function petalColor(sentiment) {
+  let color; // Declare a variable to hold the color
+
+  if (sentiment == 'positive') {
+    color = 'lightgreen'; // Set color for positive sentiment
+  } else if (sentiment == 'negative') {
+    color = 'lightcoral'; // Set color for negative sentiment
+  } else {
+    color = 'lightblue'; // Default color for neutral sentiment
   }
+
+  return color; // Return the determined color
 }

@@ -1,89 +1,85 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Arial', sans-serif;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #94C069;
+}
+
+.container {
+  text-align: center;
+}
+
+input {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #f7f022;
+  color: rgb(12, 12, 12);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+#garden {
+  margin-top: 20px;
+  position: relative;
+  width: 700px; /* Smaller width for garden */
+  height: 700px; /* Smaller height for garden */
+  background-color: #7F6237;
+  display: grid; /* Enable grid layout */
+  grid-template-columns: repeat(5, 100px); /* 5 columns in the grid */
+  grid-template-rows: repeat(5, 100px); /* 5 rows in the grid */
+  gap: 5px; /* Gap between grid cells */
+  padding: 70px; /* Padding inside the garden box */
+  box-sizing: border-box; /* Ensures padding is included in total dimensions */
+}
+
+
+.flower {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: transform 3s ease-in-out;
+
+}
+
+.petal {
+  position: absolute;
+  width: 20px; /* Width of the petal */
+  height: 20px; /* Height of the petal */
+  background-color: #f48fb1; /* Color of the petal */
+  border-radius: 50%; /* Makes the petal round */
+}
+
+
+
+.center {
+  width: 20px; /* Increased size for a more pronounced center */
+  height: 20px; /* Increased size for a more pronounced center */
+  background-color: yellow; /* Center color */
+  border-radius: 50%; /* Keep the center round */
+
+}
+
+@keyframes transform {
+  from {
+    transform: scale(0.2); /* Start small */
+    opacity: 0;           /* Start invisible */
   }
-  
-  body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: #f0f4f8;
+  to {
+    transform: scale(1);  /* End at full size */
+    opacity: 1;           /* End fully visible */
   }
-  
-  .container {
-    text-align: center;
-  }
-  
-  input {
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 2px solid #ddd;
-    margin-right: 10px;
-  }
-  
-  button {
-    padding: 10px 20px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #45a049;
-  }
-  
-  #garden {
-    margin-top: 20px;
-    position: relative;
-    width: 100vw;
-    height: 60vh;
-    background-color: #fff;
-    border: 2px solid #ccc;
-    overflow: hidden;
-  }
-  
-  .flower {
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    animation: bloom 3s ease-in-out forwards;
-    opacity: 0;
-  }
-  
-  .petal {
-    position: absolute;
-    width: 20px;
-    height: 50px;
-    background-color: #f48fb1;
-    border-radius: 50%;
-    transform-origin: bottom center;
-  }
-  
-  .flower-center {
-    width: 30px;
-    height: 30px;
-    background-color: yellow;
-    border-radius: 50%;
-  }
-  
-  @keyframes bloom {
-    0% {
-      transform: scale(0.2);
-      opacity: 0;
-    }
-    50% {
-      opacity: 1;
-    }
-    100% {
-      transform: scale(1);
-      opacity: 1;
-    }
-  }
-  
+}
