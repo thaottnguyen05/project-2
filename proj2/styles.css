@@ -8,40 +8,40 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #3f9b0b;
+  background-color: #94C069;
 }
 
 .container {
   text-align: center;
 }
 
-input, button {
+input {
   padding: 10px;
   font-size: 16px;
+  border-radius: 5px;
+  margin-right: 10px;
 }
-
-
 
 button {
-  background-color: #f1e500;
-  color: rgb(0, 0, 0);
+  padding: 10px 20px;
+  background-color: #f7f022;
+  color: rgb(12, 12, 12);
+  border-radius: 5px;
   cursor: pointer;
 }
-
-
 
 #garden {
   margin-top: 20px;
   position: relative;
-  width: 700px;
-  height: 700px;
-  background-color: #836539;
-  overflow: hidden;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(5, 1fr);
-  gap: 5px;
-  padding: 70px;
+  width: 700px; 
+  height: 700px; 
+  background-color: #7F6237;
+  display: grid; 
+  grid-template-columns: repeat(5, 100px); 
+  grid-template-rows: repeat(5, 100px); 
+  gap: 5px; 
+  padding: 70px; 
+  box-sizing: border-box; 
 }
 
 .flower {
@@ -49,35 +49,31 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
-  animation: bloom 3s ease-in-out forwards;
-}
-
-.petal, .flower-center {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
+  animation: transform 3s ease-in-out;
 }
 
 .petal {
-  background-color: #f48fb1;
-  transform-origin: 50% 50%;
+  position: absolute;
+  width: 20px; 
+  height: 20px; 
+  background-color: #f48fb1; 
+  border-radius: 50%; 
 }
 
-.flower-center {
-  background-color: yellow;
+.center {
+  width: 20px; 
+  height: 20px; 
+  background-color: yellow; 
+  border-radius: 50%; 
 }
 
-@keyframes bloom {
-  0% {
-    transform: scale(0.2);
-    opacity: 0;
+@keyframes transform {
+  from {
+    transform: scale(0.2); 
+    opacity: 0;           
   }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
+  to {
+    transform: scale(1);  
+    opacity: 1;           
   }
 }

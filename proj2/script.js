@@ -1,57 +1,65 @@
 let plantButton = document.getElementById('plantButton');
-let wordInput = document.getElementById('wordInput');
+let input = document.getElementById('input');
 let garden = document.getElementById('garden');
-let petalCount = 6; // Fixed number of petals
+let petalCount = 6; 
 
-plantButton.addEventListener('click', bloomFromInput);
-wordInput.addEventListener('keydown', function(event) {
-  if (event.key === 'Enter') bloomFromInput();
+plantButton.addEventListener('click', displayFlower);
+input.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') 
+    displayFlower();
 });
 
-function bloomFromInput() {
-  let word = wordInput.value.trim();
-  if (word) {
-    let flower = createFlower(word);
-    placeFlowerRandomly(flower);
-    garden.appendChild(flower);
-    wordInput.value = ''; // Clear input after bloom
+
+function displayFlower() {
+  let userInput = input.value;
+  if (userInput) {
+    let flower = createFlower(userInput);
+    randomPos(flower);
+    garden.append(flower);
+    input.value = ''; 
   }
 }
 
-function createFlower(word) {
+function createFlower(userInput) { 
   let flower = document.createElement('div');
   flower.classList.add('flower');
-  
+
   let center = document.createElement('div');
-  center.classList.add('flower-center');
-  flower.appendChild(center);
-  
+  center.classList.add('center');
+
+  flower.append(center);
+
   for (let i = 0; i < petalCount; i++) {
     let petal = document.createElement('div');
     petal.classList.add('petal');
-    petal.style.transform = 'rotate(' + (360 / petalCount) * i + 'deg) translate(0, -25px)';
-    petal.style.backgroundColor = sentimentColor(analyzeSentiment(word));
-    flower.appendChild(petal);
+
+    let angle = (360 / petalCount) * i;  
+    petal.style.transform = `rotate(${angle}deg) translate(0px,-25px)`;
+
+    petal.style.backgroundColor = petalColor(sentiment(userInput));
+    flower.append(petal);
   }
-  
-  return flower;
+
+  return flower; 
 }
 
-function placeFlowerRandomly(flower) {
-  flower.style.gridColumnStart = Math.floor(Math.random() * 5) + 1; // Random column
-  flower.style.gridRowStart = Math.floor(Math.random() * 5) + 1; // Random row
+function randomPos(flower) {
+  let randomColumn = Math.floor(Math.random() * 5) +1; 
+  let randomRow = Math.floor(Math.random() * 5) +1; 
+  flower.style.gridColumnStart = randomColumn;
+  flower.style.gridRowStart = randomRow;
 }
 
-function analyzeSentiment(word) {
+function sentiment(userInput) {
   let positiveWords = [
-    'happy', 'happiness', 'happier', 'happiest', 
-    'amazing', 'beautiful', 'fun', 'good', 'great', 'awesome', 
-    'like', 'liked', 
+    'happy', 'happiness', 'happier', 'happiest', 'amazing', 'beautiful', 'fun',
     'love', 'loved', 'loving',
+    'like', 'liked', 'liking',
     'joy', 'joyful', 'joyfulness',
     'peace', 'peaceful', 'peacefully',
     'excited', 'excitement', 'exciting',
     'hope', 'hopeful', 'hoped', 'hoping',
+    'good', 'great', 'awesome', 'fantastic', 'ecstatic',
     'grateful', 'gratitude', 'gratefully',
     'success', 'successful', 'succeeded', 'succeeding',
     'brave', 'bravery', 'braver', 'bravest',
@@ -66,12 +74,14 @@ function analyzeSentiment(word) {
     'delight', 'delighted', 'delightful', 'delighting',
     'caring', 'care', 'cared', 'caring',
     'motivate', 'motivated', 'motivating', 'motivation'
-];
+  ];
   let negativeWords = [
-    'bad', 'teerible', 'sad', 'sadder', 'saddest',
+    'sad', 'sadder', 'saddest',
     'angry', 'anger', 'angrier', 'angriest',
     'fear', 'fearful', 'feared', 'fearing',
     'hate', 'hated', 'hating', 'tire',
+    'bad', 'terrible', 'mad', 'sick', 'down', 
+    'depressed', 'depressing', 'gloomy',
     'tired', 'tiredness', 'tiring',
     'disappoint', 'disappointed', 'disappointing',
     'worry', 'worried', 'worrying',
@@ -88,21 +98,36 @@ function analyzeSentiment(word) {
     'annoy', 'annoyed', 'annoying',
     'distrust', 'distrustful', 'distrusted', 'distrusting',
     'pain', 'painful', 'pained'
-];
+  ];
 
-  for (let pw of positiveWords) {
-    if (word.includes(pw)) return 'positive'; 
+  for (let x = 0; x < positiveWords.length; x++) {
+    
+    if (userInput.includes(positiveWords[x])) {
+      return 'positive';
+    }
   }
 
-  for (let nw of negativeWords) {
-    if (word.includes(nw)) return 'negative'; 
+  for (let x = 0; x < negativeWords.length; x++) {
+    
+    if (userInput.includes(negativeWords[x])) {
+      return 'negative';
+    }
   }
-  
-  return 'neutral';
+
+  return 'neutral'
+
 }
 
-function sentimentColor(sentiment) {
-  if (sentiment === 'positive') return 'lightgreen';
-  if (sentiment === 'negative') return 'lightcoral';
-  return 'lightblue'; 
+function petalColor(sentiment) {
+  let color; 
+
+  if (sentiment == 'positive') {
+    color = 'lightgreen'; 
+  } else if (sentiment == 'negative') {
+    color = 'lightcoral'; 
+  } else {
+    color = 'lightblue';
+  }
+
+  return color;
 }
